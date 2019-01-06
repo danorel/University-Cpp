@@ -5,17 +5,17 @@
 
 Student::Student(std::string name) {
     this->name = name;
+    midterm = 0;
+    final = 0;
+    homework_average = 0;
+    score = 0;
+    std::cout << "Created student with name " << this->name << std::endl;
 }
 
 void Student::calculate_grade() {
-    std::cout << "Enter homework grades: ";
-    read_homework_grades(std::cin);
-    std::cout << "Enter midterm and final grades: ";
-    read_midterm_and_final(std::cin);
+    read_entire_grades(std::cin);
     calculate_median();
-    std::cout << "Median is " << homework_average << std::endl;
     calculate_score();
-    std::cout << "General score is " << score << std::endl;
 }
 
 int Student::get_final() {
@@ -34,7 +34,23 @@ std::vector<int> Student::get_homework_grades() {
     return homework_grades;
 }
 
+int Student::get_score() {
+    return score;
+}
+
+
+void Student::show_grade() {
+    std::cout << "Your final grade of the trim is " << get_score() << std::endl;
+}
+
+std::istream &Student::read_entire_grades(std::istream &input) {
+    read_homework_grades(input);
+    read_midterm_and_final(input);
+    return input;
+}
+
 std::istream &Student::read_homework_grades(std::istream &input) {
+    std::cout << "Enter homework grades: ";
     if(input){
         homework_grades.clear();
         int grade;
@@ -42,15 +58,18 @@ std::istream &Student::read_homework_grades(std::istream &input) {
             homework_grades.push_back(grade);
         }
         input.clear();
+        input.ignore();
     }
     return input;
 }
 
 std::istream &Student::read_midterm_and_final(std::istream &input) {
+    std::cout << "Enter midterm and final grades: ";
     if(input){
         input >> this->midterm;
         input >> this->final;
         input.clear();
+        input.ignore();
     }
     return input;
 }
@@ -71,5 +90,5 @@ std::string Student::toString() {
 }
 
 Student::~Student() {
-    std::cout << "Destructor destroyed student with name " << get_name() << std::endl;
+//    std::cout << "Destructor destroyed student with name " << get_name() << std::endl;
 }
